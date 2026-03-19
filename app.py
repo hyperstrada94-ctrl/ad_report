@@ -76,3 +76,5 @@ top_summary = summary.sort_values('ROAS(%)', ascending=False).head(5)
 fig, ax = plt.subplots(figsize=(12,6))
 ax.bar(top_summary['캠페인'], top_summary['ROAS(%)'])
 plt.xticks(rotation=45, ha='right')
+
+summary['캠페인'] = summary['캠페인'].str[:10]
