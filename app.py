@@ -1,26 +1,19 @@
 import streamlit as st
-
-st.title("광고 성과 MoM 대시보드")
-
-st.write("✅ 실행 성공")
-
-uploaded_file = st.file_uploader("CSV 파일 업로드", type=["csv"])
-
-if uploaded_file:
-    st.write("파일 업로드 완료")
-import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
 st.title("광고 성과 MoM 대시보드")
 
+# 파일 업로드 (한 번만!)
 uploaded_file = st.file_uploader("CSV 파일 업로드", type=["csv"])
 
-if uploaded_file:
+if uploaded_file is not None:
+    st.success("파일 업로드 완료")
+
     df = pd.read_csv(uploaded_file, encoding='utf-8', header=1)
 
-    # 숫자형 변환
-    cols = ['노출수','클릭수','총비용(VAT포함,원)','총 전환수','총 전환매출액(원)','총 광고수익률(%)']
+    # 숫자 변환
+    cols = ['노출수','클릭수','총비용(VAT포함,원)','총 전환수','총 전환매출액(원)']
     for col in cols:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
@@ -40,7 +33,7 @@ if uploaded_file:
     st.subheader("캠페인 요약")
     st.dataframe(summary)
 
-    # ROAS 그래프
+    # 그래프
     fig, ax = plt.subplots()
     ax.bar(summary['캠페인'], summary['ROAS(%)'])
     ax.set_title("캠페인별 ROAS")
