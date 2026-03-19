@@ -40,3 +40,29 @@ if uploaded_file is not None:
     plt.xticks(rotation=45)
 
     st.pyplot(fig)
+
+top_campaign = summary.sort_values('ROAS(%)', ascending=False).iloc[0]
+worst_campaign = summary.sort_values('ROAS(%)').iloc[0]
+avg_roas = summary['ROAS(%)'].mean()
+total_cost = summary['총비용(VAT포함,원)'].sum()
+total_revenue = summary['총 전환매출액(원)'].sum()
+st.subheader("📊 자동 요약 리포트")
+
+st.write(f"""
+전체 광고비는 **{int(total_cost):,}원**,  
+총 매출은 **{int(total_revenue):,}원**으로  
+평균 ROAS는 **{avg_roas:.1f}%**입니다.
+
+가장 성과가 좋은 캠페인은 **{top_campaign['캠페인']}**이며  
+ROAS는 **{top_campaign['ROAS(%)']:.1f}%**입니다.
+
+반면, 가장 성과가 낮은 캠페인은 **{worst_campaign['캠페인']}**으로  
+개선 또는 중단 검토가 필요합니다.
+""")
+
+if avg_roas < 100:
+    st.error("⚠️ 전체 광고가 적자 상태입니다. 구조 개선 필요")
+elif avg_roas < 300:
+    st.warning("📉 효율이 낮은 상태입니다. 최적화 필요")
+else:
+    st.success("🚀 효율이 우수합니다. 확장 검토 가능")
