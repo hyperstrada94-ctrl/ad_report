@@ -66,3 +66,13 @@ elif avg_roas < 300:
     st.warning("📉 효율이 낮은 상태입니다. 최적화 필요")
 else:
     st.success("🚀 효율이 우수합니다. 확장 검토 가능")
+
+fig, ax = plt.subplots(figsize=(12,6))
+
+plt.xticks(rotation=45, ha='right')
+
+top_summary = summary.sort_values('ROAS(%)', ascending=False).head(5)
+
+fig, ax = plt.subplots(figsize=(12,6))
+ax.bar(top_summary['캠페인'], top_summary['ROAS(%)'])
+plt.xticks(rotation=45, ha='right')
